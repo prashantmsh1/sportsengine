@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-
+import { db } from "@repo/database";
 const app = express();
 const port = 5000;
 

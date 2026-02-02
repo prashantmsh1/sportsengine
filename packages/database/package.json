@@ -10,6 +10,7 @@
         "db:generate": "drizzle-kit generate",
         "db:push": "drizzle-kit push",
         "db:studio": "drizzle-kit studio",
+        "db:migrate": "drizzle-kit migrate",
         "lint": "eslint . --max-warnings 0",
         "check-types": "tsc --noEmit"
     },

@@ -1,7 +1,6 @@
 import express from "express";
 import { WebSocketServer, WebSocket } from "ws";
 import cors from "cors";
-import { db } from "@repo/database";
 
 const app = express();
 const port = 8080;

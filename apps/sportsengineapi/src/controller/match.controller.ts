@@ -33,6 +33,10 @@ export const createMatch = async (req: Request, res: Response) => {
                 }),
             })
             .returning();
+
+        if (res.app.locals.broadcastMatchCreated) {
+            res.app.locals.broadcastMatchCreated(match);
+        }
         res.status(201).json({ message: "Match created successfully", match: match });
     } catch (error) {
         console.error(error);

@@ -11,7 +11,7 @@ export const createMatch = async (req: Request, res: Response) => {
         if (!parsed.success) {
             return res.status(400).json({
                 error: "Invalid request body",
-                details: JSON.stringify(parsed.error),
+                details: parsed.error.issues,
             });
         }
         const {
@@ -45,7 +45,7 @@ export const getMatch = async (req: Request, res: Response) => {
     if (!parsed.success) {
         return res.status(400).json({
             error: "Invalid request query",
-            details: JSON.stringify(parsed.error),
+            details: parsed.error.issues,
         });
     }
     const limit = Math.min(parsed.data.limit ?? 50, MAX_LIMIT);

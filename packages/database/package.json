@@ -22,8 +22,8 @@
     },
     "devDependencies": {
         "drizzle-kit": "^0.30.4",
-        "@repo/typescript-config": "*",
-        "@repo/eslint-config": "*",
+        "@repo/typescript-config": "workspace:*",
+        "@repo/eslint-config": "workspace:*",
         "@types/node": "^22.10.10",
         "typescript": "5.9.2"
     }

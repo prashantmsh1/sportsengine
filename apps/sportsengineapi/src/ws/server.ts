@@ -1,8 +1,11 @@
 import { WebSocket, WebSocketServer } from "ws";
 import { Server } from "http";
 import { Match as MatchType } from "@repo/database";
-import express from "express";
-
+import { arcjet } from "../configs/arcjet";
+// Add this interface at the top of the file (after imports)
+interface ExtendedWebSocket extends WebSocket {
+    isAlive: boolean;
+}
 export const sendJson = (ws: WebSocket, data: any) => {
     if (ws.readyState != WebSocket.OPEN) {
         return;
@@ -26,20 +29,55 @@ export const attachWebSocketServer = (server: Server) => {
         maxPayload: 1024 * 1024,
     });
 
-    wss.on("connection", (ws) => {
+    wss.on("connection", async (socket: ExtendedWebSocket) => {
+        if (arcjet.wsArcjet) {
+            try {
+                const decision = await arcjet.wsArcjet.protect(socket);
+                if (decision?.isDenied()) {
+                    const code = decision.reason.isRateLimit() ? 4029 : 1008;
+                    const reason = decision.reason.isRateLimit()
+                        ? "Rate limit exceeded"
+                        : "Blocked by Arcjet";
+                    console.log("Arcjet denied", decision);
+                    return socket.close(code, reason);
+                }
+            } catch (error) {
+                console.error("Arcjet error", error);
+                return socket.close(1008, "Server Security Error");
+            }
+        }
+        socket.isAlive = true;
+
+        socket.on("pong", () => {
+            socket.isAlive = true;
+        });
         console.log("Client connected");
 
-        sendJson(ws, { type: "welcome" });
-        ws.on("message", (message) => {});
+        sendJson(socket, { type: "welcome" });
+        socket.on("message", (message) => {});
 
-        ws.on("error", (error) => {
+        socket.on("error", (error) => {
             console.log("Client error", error);
         });
-        ws.on("close", () => {
+        socket.on("close", () => {
             console.log("Client disconnected");
         });
     });
 
+    const interval = setInterval(() => {
+        wss.clients.forEach((ws) => {
+            const socket = ws as ExtendedWebSocket;
+            if (socket.isAlive === false) {
+                return socket.terminate();
+            }
+            socket.isAlive = false;
+            socket.ping(() => {});
+        });
+    }, 30000);
+
+    wss.on("close", () => {
+        clearInterval(interval);
+    });
     function broadcastMatchCreated(match: MatchType) {
         broadcastJson(wss, { type: "match_created", match });
     }

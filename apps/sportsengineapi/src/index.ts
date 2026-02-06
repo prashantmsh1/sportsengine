@@ -4,9 +4,15 @@ import morgan from "morgan";
 import http from "http";
 import { matchRouter } from "./routes/matches";
 import { attachWebSocketServer } from "./ws/server";
+import dotenv from "dotenv";
+import { securityMiddleware } from "./configs/arcjet";
+dotenv.config();
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
 const HOST = process.env.HOST || "0.0.0.0";
+
+// Trust proxy to get correct client IP (needed for Arcjet rate limiting)
+app.set("trust proxy", true);
 
 app.use(cors());
 app.use(morgan("dev"));
@@ -17,6 +23,8 @@ const server = http.createServer(app);
 app.get("/health", (req, res) => {
     res.json({ status: "ok", service: "sportsengineapi" });
 });
+
+app.use(securityMiddleware());
 
 app.use("/matches", matchRouter);
 

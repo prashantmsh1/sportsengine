@@ -7,14 +7,14 @@
         "start": "node dist/index.js"
     },
     "dependencies": {
-        "@repo/database": "*",
+        "@repo/database": "workspace:*",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
         "ws": "^8.18.0"
     },
     "devDependencies": {
-        "@repo/typescript-config": "*",
+        "@repo/typescript-config": "workspace:*",
         "@types/cors": "^2.8.17",
         "@types/express": "^4.17.21",
         "@types/node": "^22.15.3",

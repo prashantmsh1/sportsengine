@@ -44,7 +44,7 @@ export const createCommentary = async (req: Request, res: Response) => {
             .returning();
 
         if (req.app.locals.broadcastCommentry) {
-            req.app.locals.broadcastCommentry(result.matchId, result);
+            req.app.locals.broadcastCommentry(String(result.matchId), result);
         }
 
         res.status(201).json({ message: "Commentary created successfully", commentary: result });

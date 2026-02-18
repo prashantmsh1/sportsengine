@@ -2,11 +2,16 @@
     "name": "@repo/database",
     "version": "0.0.0",
     "private": true,
-    "main": "./src/index.ts",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "exports": {
-        ".": "./src/index.ts"
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        }
     },
     "scripts": {
+        "build": "tsup",
         "dev": "drizzle-kit studio",
         "db:generate": "drizzle-kit generate",
         "db:push": "drizzle-kit push",
@@ -25,6 +30,7 @@
         "@repo/typescript-config": "workspace:*",
         "@repo/eslint-config": "workspace:*",
         "@types/node": "^22.10.10",
+        "tsup": "^8.5.1",
         "typescript": "5.9.2"
     }
 }

@@ -13,7 +13,8 @@
         "db:studio": "drizzle-kit studio",
         "db:migrate": "drizzle-kit migrate",
         "lint": "eslint . --max-warnings 0",
-        "check-types": "tsc --noEmit"
+        "check-types": "tsc --noEmit",
+        "build": "tsup src/index.ts --format cjs,esm --dts"
     },
     "dependencies": {
         "dotenv": "^17.2.3",

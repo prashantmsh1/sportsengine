@@ -2,7 +2,7 @@ import createArcjet, { detectBot, shield, slidingWindow } from "@arcjet/node";
 import { NextFunction, Request, Response } from "express";
 
 const arcjetKey = process.env.ARCJET_KEY;
-const arcjectMode = process.env.ARCJET_ENV != "development" ? "LIVE" : "DRY_RUN";
+const arcjectMode = process.env.ARCJET_ENV === "development" ? "DRY_RUN" : "LIVE";
 
 if (!arcjetKey) {
     throw new Error("ARCJET_KEY is not set");
@@ -13,10 +13,10 @@ const httpArcjet = arcjetKey
           key: arcjetKey,
 
           rules: [
-              detectBot({
-                  mode: arcjectMode,
-                  allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"],
-              }),
+              //   detectBot({
+              //       mode: arcjectMode,
+              //       allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"],
+              //   }),
               slidingWindow({
                   mode: arcjectMode,
                   max: 50,

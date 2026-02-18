@@ -6,6 +6,7 @@ import { matchRouter } from "./routes/matches";
 import { attachWebSocketServer } from "./ws/server";
 import dotenv from "dotenv";
 import { securityMiddleware } from "./configs/arcjet";
+import { commentaryRouter } from "./routes/commentry";
 dotenv.config();
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
@@ -27,11 +28,12 @@ app.get("/health", (req, res) => {
 app.use(securityMiddleware());
 
 app.use("/matches", matchRouter);
+app.use("/matches/:id/commentry", commentaryRouter);
 
-const { broadcastMatchCreated } = attachWebSocketServer(server);
+const { broadcastMatchCreated, broadcastCommentry } = attachWebSocketServer(server);
 
 app.locals.broadcastMatchCreated = broadcastMatchCreated;
-
+app.locals.broadcastCommentry = broadcastCommentry;
 server.listen(PORT, HOST, () => {
     const baseUrl = HOST === "0.0.0.0" ? `http://localhost:${PORT}` : `http://${HOST}:${PORT}`;
     console.log(`SportsEngine API started on port ${baseUrl.replace("http", "ws")}/ws`);

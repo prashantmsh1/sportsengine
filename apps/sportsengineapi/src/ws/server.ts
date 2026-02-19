@@ -82,23 +82,24 @@ export const handleMessage = (ws: ExtendedWebSocket, data: MessagePayload) => {
 
     switch (message.type) {
         case "subscribe":
-            subscribeToMatch(message.matchId, ws);
-            ws.subscriptions.add(message.matchId);
+            const subMatchId = String(message.matchId);
+            subscribeToMatch(subMatchId, ws);
+            ws.subscriptions.add(subMatchId);
             sendJson(ws, {
                 type: "subscribed",
-                matchId: message.matchId,
+                matchId: subMatchId,
             });
             break;
         case "unsubscribe":
-            unsubscribeToMatch(message.matchId, ws);
-            ws.subscriptions.delete(message.matchId);
+            const unsubMatchId = String(message.matchId);
+            unsubscribeToMatch(unsubMatchId, ws);
+            ws.subscriptions.delete(unsubMatchId);
             sendJson(ws, {
                 type: "unsubscribed",
-                matchId: message.matchId,
+                matchId: unsubMatchId,
             });
             break;
         default:
-         
             sendJson(ws, {
                 type: "error",
                 message: "Invalid message from subscriber",
@@ -128,7 +129,6 @@ export const attachWebSocketServer = (server: Server) => {
             try {
                 // Pass the IncomingMessage as the request
                 const decision = await arcjet.wsArcjet.protect(request as any);
-
 
                 if (decision.isDenied()) {
                     const reason = decision.reason.isRateLimit()

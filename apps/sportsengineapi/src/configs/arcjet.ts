@@ -13,10 +13,10 @@ const httpArcjet = arcjetKey
           key: arcjetKey,
 
           rules: [
-              //   detectBot({
-              //       mode: arcjectMode,
-              //       allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"],
-              //   }),
+              detectBot({
+                  mode: arcjectMode,
+                  allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"],
+              }),
               slidingWindow({
                   mode: arcjectMode,
                   max: 50,

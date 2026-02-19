@@ -5,6 +5,8 @@ import type {
     CommentaryResponse,
     CreateCommentaryInput,
     CreateCommentaryResponse,
+    UpdateScoreInput,
+    UpdateScoreResponse,
 } from "./types";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -39,6 +41,16 @@ export async function getMatches(limit?: number): Promise<MatchesResponse> {
 export async function createMatch(data: CreateMatchInput): Promise<CreateMatchResponse> {
     return apiFetch<CreateMatchResponse>("/matches", {
         method: "POST",
+        body: JSON.stringify(data),
+    });
+}
+
+export async function updateScore(
+    matchId: number,
+    data: UpdateScoreInput,
+): Promise<UpdateScoreResponse> {
+    return apiFetch<UpdateScoreResponse>(`/matches/${matchId}/score`, {
+        method: "PATCH",
         body: JSON.stringify(data),
     });
 }

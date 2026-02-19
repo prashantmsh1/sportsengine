@@ -1,8 +1,10 @@
 import { Router } from "express";
 
-import { createMatch, getMatch } from "../controller/match.controller";
+import { createMatch, getMatch, updateScore } from "../controller/match.controller";
 export const matchRouter: Router = Router();
 
 matchRouter.post("/", createMatch);
 
 matchRouter.get("/", getMatch);
+
+matchRouter.patch("/:id/score", updateScore);

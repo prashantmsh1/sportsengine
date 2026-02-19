@@ -25,6 +25,11 @@ export interface CreateMatchInput {
     awayScore?: number;
 }
 
+export interface UpdateScoreInput {
+    homeScore: number;
+    awayScore: number;
+}
+
 // ─── Commentary Types ──────────────────────────────────────────────────────────
 
 export interface Commentary {
@@ -65,6 +70,11 @@ export interface CreateMatchResponse {
     match: Match;
 }
 
+export interface UpdateScoreResponse {
+    message: string;
+    match: Match;
+}
+
 export interface CommentaryResponse {
     message: string;
     commentry: Commentary[];
@@ -82,6 +92,7 @@ export type WSMessageType =
     | "subscribed"
     | "unsubscribed"
     | "match_created"
+    | "score_updated"
     | "comment"
     | "error";
 

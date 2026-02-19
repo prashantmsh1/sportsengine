@@ -54,6 +54,10 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
                             queryClient.invalidateQueries({ queryKey: ["matches"] });
                             break;
 
+                        case "score_updated":
+                            queryClient.invalidateQueries({ queryKey: ["matches"] });
+                            break;
+
                         case "comment":
                             if (message.data) {
                                 const commentary = message.data as Commentary;

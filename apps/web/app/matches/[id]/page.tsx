@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CommentaryFeed } from "@/components/commentary/commentary-feed";
 import { AddCommentaryForm } from "@/components/commentary/add-commentary-form";
+import { UpdateScoreDialog } from "@/components/matches/update-score-dialog";
 import { useMatches } from "@/hooks/use-matches";
 import { format } from "@/lib/date-utils";
 
@@ -127,6 +128,17 @@ export default function MatchDetailPage() {
                             Away
                         </p>
                     </div>
+                </div>
+
+                {/* Update score button */}
+                <div className="flex justify-center mb-4">
+                    <UpdateScoreDialog
+                        matchId={match.id}
+                        homeTeam={match.homeTeam}
+                        awayTeam={match.awayTeam}
+                        currentHomeScore={match.homeScore}
+                        currentAwayScore={match.awayScore}
+                    />
                 </div>
 
                 {/* Time info */}

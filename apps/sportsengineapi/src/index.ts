@@ -32,10 +32,12 @@ app.use(securityMiddleware());
 app.use("/matches", matchRouter);
 app.use("/matches/:id/commentry", commentaryRouter);
 
-const { broadcastMatchCreated, broadcastCommentry } = attachWebSocketServer(server);
+const { broadcastMatchCreated, broadcastCommentry, broadcastScoreUpdated } =
+    attachWebSocketServer(server);
 
 app.locals.broadcastMatchCreated = broadcastMatchCreated;
 app.locals.broadcastCommentry = broadcastCommentry;
+app.locals.broadcastScoreUpdated = broadcastScoreUpdated;
 server.listen(PORT, HOST, () => {
     const baseUrl = HOST === "0.0.0.0" ? `http://localhost:${PORT}` : `http://${HOST}:${PORT}`;
     console.log(`SportsEngine API started on port ${baseUrl.replace("http", "ws")}/ws`);

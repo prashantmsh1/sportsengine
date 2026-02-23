@@ -4,7 +4,18 @@ import React, { createContext, useContext, useEffect, useRef, useCallback, useSt
 import { useQueryClient } from "@tanstack/react-query";
 import type { WSMessage, Commentary, CommentaryResponse } from "@/lib/types";
 
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:5000/ws";
+const getWsUrl = () => {
+    let url = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:5000/ws";
+    // Upgrade to wss:// if the page is loaded over https:// to prevent Mixed Content errors
+    if (typeof window !== "undefined" && window.location.protocol === "https:") {
+        if (url.startsWith("ws://")) {
+            url = url.replace("ws://", "wss://");
+        }
+    }
+    return url;
+};
+
+const WS_URL = getWsUrl();
 const RECONNECT_INTERVAL = 3000;
 const MAX_RECONNECT_ATTEMPTS = 10;
 
